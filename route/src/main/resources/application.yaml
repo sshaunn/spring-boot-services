@@ -1,0 +1,49 @@
+server:
+  port: 9291
+
+spring:
+  application:
+    name: route
+  cloud:
+    gateway:
+      routes:
+        - id: EMPLOYEE-SERVICE
+          uri: lb://EMPLOYEE-SERVICE
+          predicates:
+            - Path=/employees/**
+          filters:
+            - name: CircuitBreaker
+              args:
+                name: EMPLOYEE-SERVICE
+                fallbackUri: forward:/employeeServiceFallBack
+
+        - id: INCOME-SERVICE
+          uri: lb://INCOME-SERVICE
+          predicates:
+            - Path=/calculate/**
+          filters:
+            - name: CircuitBreaker
+              args:
+                name: INCOME-SERVICE
+                fallbackUri: forward:/incomeServiceFallBack
+
+management:
+  endpoints:
+    web:
+      exposure:
+        include: hystrix.stream
+
+hystrix:
+  command:
+    fallback:
+      execution:
+        isolation:
+          thread:
+            timeoutInMilliseconds: 60000
+
+
+#spring:
+#  cloud:
+#    config:
+#      enabled: true
+#      uri: http://localhost:9291

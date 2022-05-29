@@ -1,0 +1,55 @@
+version: '3.7'
+services:
+  service-registration:
+    container_name: service-registration
+    build:
+      context: ./service-registration
+      dockerfile: Dockerfile
+    ports:
+      - "8761:8761"
+  cloud-config-server:
+    container_name: cloud-config-server
+    build:
+      context: ./cloud-config-server
+      dockerfile: Dockerfile
+    environment:
+      - eureka.client.service-url.defaultZone=http://service-registration:8761/eureka
+    depends_on:
+      - service-registration
+    ports:
+      - "9191:9191"
+  route:
+    container_name: route
+    build:
+      context: ./route
+      dockerfile: Dockerfile
+    environment:
+      - eureka.client.service-url.defaultZone=http://service-registration:8761/eureka
+    depends_on:
+      - service-registration
+      - employee
+      - income
+    ports:
+      - "9291:9291"
+  employee:
+    container_name: employee
+    build:
+      context: ./employee
+      dockerfile: Dockerfile
+    environment:
+      - eureka.client.service-url.defaultZone=http://service-registration:8761/eureka
+    depends_on:
+      - service-registration
+    ports:
+      - "9001:9001"
+  income:
+    container_name: income
+    build:
+      context: ./income
+      dockerfile: Dockerfile
+    environment:
+      - eureka.client.service-url.defaultZone=http://service-registration:8761/eureka
+    depends_on:
+      - service-registration
+    ports:
+      - "9002:9002"

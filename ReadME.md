@@ -104,6 +104,8 @@ gross income, net income, and super annually.
 ### Basic logic
 + Simply validate the data from request, and check the number if it is less than 0,
 handle this exception.
+Here is the example, when you input unexpected value, it will return exception:
++ ![img_7.png](img_7.png)
 + Save employees data into local h2 database, and internally send the employees data 
 to income service, to calculate all data which is needed to process.
 

@@ -107,6 +107,91 @@ handle this exception.
 + Save employees data into local h2 database, and internally send the employees data 
 to income service, to calculate all data which is needed to process.
 
+### Docker images and containers
++ Step 1: Each service has its own Dockerfile.
+```
+mvn clean package
+
+docker build -t [service name] .
+```
++ Step 2: Wrap all images into docker compose, you can find docker-compose.yml file
+```
+version: '3.8'
+#x-aws-vpc: "vpc-001ed8f421c506b96"
+services:
+  service-registration:
+#    image: public.ecr.aws/m1s9y6d9/service-registration:latest
+    container_name: service-registration
+    build:
+      context: ./service-registration
+      dockerfile: Dockerfile
+    ports:
+      - "8761:8761"
+#    x-aws-protocol: http
+  cloud-config-server:
+#    image: public.ecr.aws/m1s9y6d9/cloud-config-server:latest
+    container_name: cloud-config-server
+    build:
+      context: ./cloud-config-server
+      dockerfile: Dockerfile
+    environment:
+      - eureka.client.service-url.defaultZone=http://service-registration:8761/eureka
+    depends_on:
+      - service-registration
+    ports:
+      - "9191:9191"
+#    x-aws-protocol: http
+  route:
+#    image: public.ecr.aws/m1s9y6d9/route:latest
+    container_name: route
+    build:
+      context: ./route
+      dockerfile: Dockerfile
+    environment:
+      - eureka.client.service-url.defaultZone=http://service-registration:8761/eureka
+    depends_on:
+      - service-registration
+      - employee
+      - income
+    ports:
+      - "9291:9291"
+#    x-aws-protocol: http
+  employee:
+#    image: public.ecr.aws/m1s9y6d9/employee:latest
+    container_name: employee
+    build:
+      context: ./employee
+      dockerfile: Dockerfile
+    environment:
+      - eureka.client.service-url.defaultZone=http://service-registration:8761/eureka
+    depends_on:
+      - service-registration
+    ports:
+      - "9001:9001"
+#    x-aws-protocol: http
+  income:
+#    image: public.ecr.aws/m1s9y6d9/income:latest
+    container_name: income
+    build:
+      context: ./income
+      dockerfile: Dockerfile
+    environment:
+      - eureka.client.service-url.defaultZone=http://service-registration:8761/eureka
+    depends_on:
+      - service-registration
+    ports:
+      - "9002:9002"
+#    x-aws-protocol: http
+```
++ Step 3: Push all images to AWS ECR:
+```
+docker tag [service]:[tag] public.ecr.aws/[repository]/[service]:[tag]
+docker push public.ecr.aws/[repository]/[service]:[tag]
+
+e.g:
+docker tag seisma-employee:latest public.ecr.aws/m1s9y6d9/seisma-employee:latest
+docker push public.ecr.aws/m1s9y6d9/seisma-employee:latest
+```
 ### AWS ECS Configuration
 
 + Step 1: Push all local docker images to cloud AWS ECR repository.

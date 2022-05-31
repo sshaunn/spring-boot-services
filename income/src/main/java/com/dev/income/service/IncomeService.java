@@ -17,8 +17,6 @@ import java.util.List;
 @Slf4j
 public class IncomeService {
 
-//    @Autowired
-//    private IncomeRepository repository;
 
     @Autowired
     private RestTemplate restTemplate;

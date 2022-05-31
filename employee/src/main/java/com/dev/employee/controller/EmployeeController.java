@@ -1,5 +1,6 @@
 package com.dev.employee.controller;
 
+import com.dev.employee.exception.DateParseException;
 import com.dev.employee.model.Employee;
 import com.dev.employee.service.EmployeeService;
 import lombok.extern.slf4j.Slf4j;
@@ -17,16 +18,16 @@ public class EmployeeController {
     @Autowired
     private EmployeeService service;
 
-    @PostMapping("/saveone")
-    public Employee saveEmployee(@RequestBody Employee employee) {
-        log.info("Insert new Employee info...");
-        return service.saveEmployee(employee);
-    }
 
     @PostMapping("/")
-    public List<Employee> saveEmployeeList(@RequestBody List<Employee> employees) {
+    public List<Employee> saveEmployeeList(@RequestBody List<Employee> employees) throws DateParseException{
         log.info("Save employeeList ");
         return service.saveEmployeeList(employees);
+    }
+
+    @DeleteMapping("/delete")
+    public void deleteAllEmployee() {
+        service.deleteAllEmployees();
     }
 
     @GetMapping("/{id}")

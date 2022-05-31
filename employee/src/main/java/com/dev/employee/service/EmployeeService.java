@@ -8,10 +8,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 
-import java.text.ParseException;
 import java.text.SimpleDateFormat;
-import java.time.LocalDate;
-import java.time.MonthDay;
 import java.util.*;
 
 @Service
@@ -26,10 +23,12 @@ public class EmployeeService {
         return repository.save(employee);
     }
 
-    public List<Employee> saveEmployeeList(List<Employee> employees) {
+    public List<Employee> saveEmployeeList(List<Employee> employees) throws DateParseException {
         log.info("Save EmployeeList ");
         try {
             for (Employee employee : employees) {
+                if (employee.getSuperRate() < 0) throw new DateParseException();
+                if (employee.getAnnualSalary() < 0) throw new DateParseException();
                 String[] payPeriod = employee.getPaymentStartDate().split(" - ");
                 String startDate = payPeriod[0];
                 String endDate = payPeriod[1];
@@ -42,11 +41,17 @@ public class EmployeeService {
             }
         } catch (Exception e) {
             log.error("Some error: " + e.getMessage());
+            throw new DateParseException();
 
         }
 
         return repository.saveAll(employees);
     }
+
+    public void deleteAllEmployees() {
+        repository.deleteAll();
+    }
+
 
     public Employee findEmployeeById(Long employeeId) {
         log.info("Find employee ");

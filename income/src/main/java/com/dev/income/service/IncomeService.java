@@ -77,7 +77,7 @@ public class IncomeService {
     }
 
     private List<TaxTable> getTaxTable() {
-        List taxTable = new ArrayList<>();
+        List<TaxTable> taxTable = new ArrayList<>();
         taxTable.add(new TaxTable("threshold_1", 0.00, 0.00, 0.00));
         taxTable.add(new TaxTable("threshold_1", 0.00, 0.19, 18200.00));
         taxTable.add(new TaxTable("threshold_2", 3572.00, 0.325, 37000.00));

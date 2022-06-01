@@ -25,4 +25,15 @@ jobs:
     - name: Change the eureka server directory and Build with Maven
       working-directory: ./service-registration
       run: mvn -B package --file pom.xml
-
+    - name: Change the cloud-config-server directory and Build with Maven
+      working-directory: ./cloud-config-server
+      run: mvn -B package --file pom.xml
+    - name: Change the api gateway directory and Build with Maven
+      working-directory: ./route
+      run: mvn -B package --file pom.xml
+    - name: Change the income directory and Build with Maven
+      working-directory: ./income
+      run: mvn -B package --file pom.xml
+    - name: Change the employee directory and Build with Maven
+      working-directory: ./employee
+      run: mvn -B package --file pom.xml

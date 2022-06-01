@@ -22,12 +22,7 @@ jobs:
         java-version: '11'
         distribution: 'temurin'
         cache: maven
-    - name: Change the eureka server directory
-      run: cd service-registration
-    - name: Build with Maven
+    - name: Change the eureka server directory and Build with Maven
+      working-directory: ./service-registration
       run: mvn -B package --file pom.xml
-#    - name: Change the cloud config server directory
-#        run: cd cloud-config-server
-#    - name: Build with Maven
-#        run: mvn -B package --file pom.xml
 

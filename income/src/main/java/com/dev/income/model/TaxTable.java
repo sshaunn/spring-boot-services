@@ -3,15 +3,15 @@ package com.dev.income.model;
 public class TaxTable {
 
     private String id;
-    private Double taxInit, taxForEach, taxThreshold;
+    private Double taxInit, taxForEachDollar, taxThreshold;
 
     public TaxTable() {
     }
 
-    public TaxTable(String id, Double taxInit, Double taxForEach, Double taxThreshold) {
+    public TaxTable(String id, Double taxInit, Double taxForEachDollar, Double taxThreshold) {
         this.id = id;
         this.taxInit = taxInit;
-        this.taxForEach = taxForEach;
+        this.taxForEachDollar = taxForEachDollar;
         this.taxThreshold = taxThreshold;
     }
 
@@ -20,7 +20,7 @@ public class TaxTable {
         return "TaxTable{" +
                 "id='" + id + '\'' +
                 ", taxInit=" + taxInit +
-                ", taxForEach=" + taxForEach +
+                ", taxForEachDollar=" + taxForEachDollar +
                 ", taxThreshold=" + taxThreshold +
                 '}';
     }
@@ -41,12 +41,12 @@ public class TaxTable {
         this.taxInit = taxInit;
     }
 
-    public Double getTaxForEach() {
-        return taxForEach;
+    public Double gettaxForEachDollar() {
+        return taxForEachDollar;
     }
 
-    public void setTaxForEach(Double taxForEach) {
-        this.taxForEach = taxForEach;
+    public void settaxForEachDollar(Double taxForEachDollar) {
+        this.taxForEachDollar = taxForEachDollar;
     }
 
     public Double getTaxThreshold() {

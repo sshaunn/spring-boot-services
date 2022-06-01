@@ -51,7 +51,7 @@ public class IncomeService {
         int employeePaymentMonth = employee.getPaymentMonth();
         for (int i = getTaxTable().size() - 1; i >= 0; i--) {
             double threshold = getTaxTable().get(i).getTaxThreshold();
-            double taxForEachDollar = getTaxTable().get(i).getTaxForEach();
+            double taxForEachDollar = getTaxTable().get(i).gettaxForEachDollar();
             double taxInit = getTaxTable().get(i).getTaxInit();
 
             if (employeeIncome < getTaxTable().get(i).getTaxThreshold()) continue;

@@ -2,6 +2,7 @@ package com.dev.income.service;
 
 import com.dev.income.exception.EmployeeNotFoundException;
 import com.dev.income.model.Income;
+import com.dev.income.model.TaxTable;
 import com.dev.income.orm.Employee;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -11,7 +12,9 @@ import org.springframework.stereotype.Service;
 import org.springframework.web.client.RestTemplate;
 
 import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 
 @Service
 @Slf4j
@@ -47,22 +50,16 @@ public class IncomeService {
     }
 
     private int getIncomeTax(Employee employee) {
-        int taxLevel1 = 18200;
-        if (employee.getAnnualSalary() <= taxLevel1) return 0;
-        int taxLevel2 = 37000;
-        if (employee.getAnnualSalary() > taxLevel1 && employee.getAnnualSalary() <= taxLevel2) {
-            return (int) (Math.round((employee.getPaymentMonth() - taxLevel1) * 0.19) / 12 * employee.getPaymentMonth());
-        }
-        int taxLevel3 = 87000;
-        if (employee.getAnnualSalary() > taxLevel2 && employee.getAnnualSalary() <= taxLevel3) {
-            return (int) Math.round((3572 + (employee.getAnnualSalary() - taxLevel2) * 0.325) / 12 * employee.getPaymentMonth());
-        }
-        int taxLevel4 = 180000;
-        if (employee.getAnnualSalary() > taxLevel3 && employee.getAnnualSalary() <= taxLevel4) {
-            return (int) Math.round((19822 + (employee.getAnnualSalary() - taxLevel3) * 0.37) / 12 * employee.getPaymentMonth());
-        }
-        if (employee.getAnnualSalary() > taxLevel4) {
-            return (int) Math.round((54323 + (employee.getAnnualSalary() - taxLevel4) * 0.45) / 12 * employee.getPaymentMonth());
+        Double employeeIncome = (double) employee.getAnnualSalary();
+        int employeePaymentMonth = employee.getPaymentMonth();
+        for (int i = getTaxTable().size() - 1; i >= 0; i--) {
+            double threshold = getTaxTable().get(i).getTaxThreshold();
+            double taxForEachDollar = getTaxTable().get(i).getTaxForEach();
+            double taxInit = getTaxTable().get(i).getTaxInit();
+
+            if (employeeIncome < getTaxTable().get(i).getTaxThreshold()) continue;
+            int incomeTax = (int) Math.round((taxInit + (employeeIncome - threshold) * taxForEachDollar) / 12 * employeePaymentMonth);
+            return incomeTax;
         }
         return 0;
     }
@@ -77,6 +74,16 @@ public class IncomeService {
 
     private String[] getPayPeriod(Employee employee) {
         return employee.getPaymentStartDate().split(" - ");
+    }
+
+    private List<TaxTable> getTaxTable() {
+        List taxTable = new ArrayList<>();
+        taxTable.add(new TaxTable("threshold_1", 0.00, 0.00, 0.00));
+        taxTable.add(new TaxTable("threshold_1", 0.00, 0.19, 18200.00));
+        taxTable.add(new TaxTable("threshold_2", 3572.00, 0.325, 37000.00));
+        taxTable.add(new TaxTable("threshold_3", 19822.00, 0.37, 87000.00));
+        taxTable.add(new TaxTable("threshold_4", 54232.00, 0.45, 180000.00));
+        return taxTable;
     }
 
 }

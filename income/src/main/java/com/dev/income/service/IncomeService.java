@@ -12,9 +12,7 @@ import org.springframework.stereotype.Service;
 import org.springframework.web.client.RestTemplate;
 
 import java.util.ArrayList;
-import java.util.HashMap;
 import java.util.List;
-import java.util.Map;
 
 @Service
 @Slf4j
@@ -40,7 +38,6 @@ public class IncomeService {
                     getSuper(employee),
                     getNetIncome(employee),
                     employee));
-//            System.out.println(getGrossIncome(employee));
         }
         return incomes;
     }
@@ -79,10 +76,10 @@ public class IncomeService {
     private List<TaxTable> getTaxTable() {
         List<TaxTable> taxTable = new ArrayList<>();
         taxTable.add(new TaxTable("threshold_1", 0.00, 0.00, 0.00));
-        taxTable.add(new TaxTable("threshold_1", 0.00, 0.19, 18200.00));
-        taxTable.add(new TaxTable("threshold_2", 3572.00, 0.325, 37000.00));
-        taxTable.add(new TaxTable("threshold_3", 19822.00, 0.37, 87000.00));
-        taxTable.add(new TaxTable("threshold_4", 54232.00, 0.45, 180000.00));
+        taxTable.add(new TaxTable("threshold_2", 0.00, 0.19, 18200.00));
+        taxTable.add(new TaxTable("threshold_3", 3572.00, 0.325, 37000.00));
+        taxTable.add(new TaxTable("threshold_4", 19822.00, 0.37, 87000.00));
+        taxTable.add(new TaxTable("threshold_5", 54232.00, 0.45, 180000.00));
         return taxTable;
     }
 

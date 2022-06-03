@@ -51,16 +51,16 @@ services:
     ports:
       - "9001:9001"
 #    x-aws-protocol: http
-  income:
-#    image: public.ecr.aws/m1s9y6d9/income:latest
-    container_name: income
-    build:
-      context: ./income
-      dockerfile: Dockerfile
-    environment:
-      - eureka.client.service-url.defaultZone=http://service-registration:8761/eureka
-    depends_on:
-      - service-registration
-    ports:
-      - "9002:9002"
+#  income:
+##    image: public.ecr.aws/m1s9y6d9/income:latest
+#    container_name: income
+#    build:
+#      context: ./income
+#      dockerfile: Dockerfile
+#    environment:
+#      - eureka.client.service-url.defaultZone=http://service-registration:8761/eureka
+#    depends_on:
+#      - service-registration
+#    ports:
+#      - "9002:9002"
 #    x-aws-protocol: http

@@ -31,9 +31,9 @@ jobs:
     - name: Change the api gateway directory and Build with Maven
       working-directory: ./route
       run: mvn -B package --file pom.xml
-    - name: Change the income directory and Build with Maven
-      working-directory: ./income
-      run: mvn -B package --file pom.xml
+#    - name: Change the income directory and Build with Maven
+#      working-directory: ./income
+#      run: mvn -B package --file pom.xml
     - name: Change the employee directory and Build with Maven
       working-directory: ./employee
-      run: mvn -B package --file pom.xml
+      run: mvn -B clean package

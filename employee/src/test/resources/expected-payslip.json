@@ -1,0 +1,32 @@
+[
+  {
+    "employee":{
+      "firstName":"David",
+      "lastName":"Rudd",
+      "annualSalary":60050,
+      "paymentMonth":1,
+      "superRate":0.09
+    },
+    "fromDate":"01 February",
+    "toDate":"28 February",
+    "grossIncome":5004,
+    "incomeTax":922,
+    "superannuation":450,
+    "netIncome":4082
+  },
+  {
+    "employee":{
+      "firstName":"Ryan",
+      "lastName":"Chen",
+      "annualSalary":120000,
+      "paymentMonth":1,
+      "superRate":0.1
+    },
+    "fromDate":"01 February",
+    "toDate":"28 February",
+    "grossIncome":10000,
+    "incomeTax":2669,
+    "superannuation":1000,
+    "netIncome":7331
+  }
+]
